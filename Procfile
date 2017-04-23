@@ -1,2 +1,2 @@
-web:   java -jar build/libs/clouds-1.0-SNAPSHOT.jar
+web:   java -jar build/libs/tenso-1.0-SNAPSHOT.jar
 
