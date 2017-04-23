@@ -22,6 +22,8 @@ dependencies {// https://mvnrepository.com/artifact/com.sun.istack/maven-istack-
 }
 
 jar {
+    baseName = "tenso"
+    version = "0.0.1"
     manifest {
         attributes 'Main-Class': 'com.yufimtsev.MainClass'
     }
