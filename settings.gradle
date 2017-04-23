@@ -1,0 +1,3 @@
+include ':app', ':tenhouj', ':mahjongai'
+include 'mityabot'
+
