@@ -355,6 +355,10 @@ public class Client implements IPerformGameAction {
         return state;
     }
 
+    public String getLog() {
+        return logName;
+    }
+
     public String getStatusJson() {
         return "{\"status\":\"" + state.name() + "\",\"log\":\"" + logName + "\"}";
     }

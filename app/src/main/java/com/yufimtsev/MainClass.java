@@ -3,6 +3,7 @@ package com.yufimtsev;
 import com.google.gson.Gson;
 import com.yufimtsev.mahjongai.*;
 import com.yufimtsev.mahjongai.Util;
+import com.yufimtsev.tenhouj.Client;
 import com.yufimtsev.tenhouj.Decoder;
 import com.yufimtsev.tenhouj.Log;
 
@@ -75,9 +76,11 @@ public class MainClass {
             response.log = Log.collect();
             response.infos = new ArrayList<>();
             for (Integer key : MainUtil.runningGames.keySet()) {
+                Client client = MainUtil.runningGames.get(key).client;
                 InfoResponse info = new InfoResponse();
                 info.id = key;
-                info.log = MainUtil.getBotInfo(key);
+                info.log = client.getLog();
+                info.status = client.getState().name();
                 response.infos.add(info);
             }
             return gson.toJson(response);
