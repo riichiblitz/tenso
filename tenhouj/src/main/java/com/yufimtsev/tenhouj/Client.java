@@ -26,7 +26,7 @@ public class Client implements IPerformGameAction {
     IOnStateChangedCallback autoCallback = null;
     IOnStateChangedCallback defaultCallback = new IOnStateChangedCallback() {
         public void onStateChanged(UserState state) {
-            //System.out.println("STATE CHANGED: " + state.name());
+            //Log.d("STATE CHANGED: " + state.name());
             if (autoCallback != null) {
                 autoCallback.onStateChanged(state);
             }
@@ -35,7 +35,7 @@ public class Client implements IPerformGameAction {
 
     IOnChatMessageReceived chatCallback = new IOnChatMessageReceived() {
         public void onChatMessageReceived(String message) {
-            System.out.println("Chat message: " + message);
+            Log.d("Chat message: " + message);
         }
     };
 
@@ -70,7 +70,7 @@ public class Client implements IPerformGameAction {
             receiver.start();
             setState(UserState.CONNECTED, callback);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(e);
             setState(UserState.DISCONNECTED, callback);
         }
     }
@@ -82,7 +82,7 @@ public class Client implements IPerformGameAction {
         try {
             throw new RuntimeException();
         } catch (RuntimeException e) {
-            e.printStackTrace();
+            Log.d(e);
         }
         setState(UserState.DISCONNECTING, callback);
         keepAliver.disconnect();
@@ -143,7 +143,7 @@ public class Client implements IPerformGameAction {
     }
 
     private void setState(UserState state, @Nullable IOnStateChangedCallback callback) {
-        System.out.println(state.name() + " : " + userName);
+        Log.d(state.name() + " : " + userName);
         this.state = state;
         sendState(callback);
         defaultCallback.onStateChanged(state);
@@ -156,7 +156,7 @@ public class Client implements IPerformGameAction {
     }
 
     private void parseMessage(String message) {
-        //System.out.println("Parsing message: " + message);
+        //Log.d("Parsing message: " + message);
         if (message.startsWith("<HELO")) {
             switch (state) {
                 case AUTHETICATING:
@@ -235,7 +235,7 @@ public class Client implements IPerformGameAction {
                 case PLAYING:
                     setState(UserState.PLAYING, pendingCallback);
                     logName = "http://tenhou.net/0/?log=" + Decoder.parseLogLink(message).toLowerCase();
-                    System.out.println("Game started, log link: " + Decoder.parseLogLink(message).toLowerCase());
+                    Log.d("Game started, log link: " + Decoder.parseLogLink(message).toLowerCase());
                     break;
                 default:
                     break;//throw new IllegalStateException();

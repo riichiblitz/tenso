@@ -1,8 +1,10 @@
 package com.yufimtsev;
 
+import com.google.gson.Gson;
 import com.yufimtsev.mahjongai.*;
 import com.yufimtsev.mahjongai.Util;
 import com.yufimtsev.tenhouj.Decoder;
+import com.yufimtsev.tenhouj.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import static spark.Spark.port;
 import static spark.Spark.staticFileLocation;
 
 public class MainClass {
+
+    private static Gson gson = new Gson();
 
     public static void main(String[] args) throws IOException {
 
@@ -28,14 +32,7 @@ public class MainClass {
             final String lobby = "7994";
             final int currentId = com.yufimtsev.MainUtil.getNewId();
 
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    com.yufimtsev.MainUtil.startBot(currentId, name, type, lobby, false);
-                }
-
-            }).start();
+            new Thread(() -> MainUtil.startBot(currentId, name, type, lobby, false)).start();
             return "ok";
         });
 
@@ -71,6 +68,19 @@ public class MainClass {
             }
             final int id = Integer.parseInt(req.queryParams("id"));
             return com.yufimtsev.MainUtil.getBotInfo(id);
+        });
+
+        get("/status", (req, res) -> {
+            StatusResponse response = new StatusResponse();
+            response.log = Log.collect();
+            response.infos = new ArrayList<>();
+            for (Integer key : MainUtil.runningGames.keySet()) {
+                InfoResponse info = new InfoResponse();
+                info.id = key;
+                info.log = MainUtil.getBotInfo(key);
+                response.infos.add(info);
+            }
+            return gson.toJson(response);
         });
 
         if (true) return;

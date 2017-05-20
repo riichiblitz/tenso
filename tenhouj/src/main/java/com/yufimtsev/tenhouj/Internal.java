@@ -52,7 +52,7 @@ public class Internal {
         try {
             Thread.sleep(20);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.d(e);
         }
         sendMessage("<DATE />");
     }
@@ -61,7 +61,7 @@ public class Internal {
         try {
             sendMessage(String.format("<CHAT text=\"%s\" />", URLEncoder.encode(message, "UTF-8").replace("+", "%20")));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.d(e);
         }
         sendMessage(getPrxTag(true));
     }
@@ -86,19 +86,19 @@ public class Internal {
             serverOutput.close();
             serverInput.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(e);
         }
     }
 
     public void sendMessage(String message) {
-        System.out.println(tenhouName + " Send: " + message);
+        Log.d(tenhouName + " Send: " + message);
         message += '\0';
         try {
             //serverOutput.writeByte(0);
             serverOutput.writeBytes(message);
             serverOutput.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(e);
         }
     }
 
@@ -131,13 +131,13 @@ public class Internal {
             if (message.trim().length() == 0) {
                 return "<DISCONNECT />";
             } else {
-                System.out.println(tenhouName + " Received: " + message);
+                Log.d(tenhouName + " Received: " + message);
             }
             return message;
         } catch (SocketTimeoutException e) {
             // DO NOTHING
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(e);
         }
         return "";
     }

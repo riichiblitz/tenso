@@ -2,6 +2,7 @@ package com.yufimtsev;
 
 import com.yufimtsev.mityabot.logic.PlayerLogic;
 import com.yufimtsev.tenhouj.Client;
+import com.yufimtsev.tenhouj.Log;
 import com.yufimtsev.tenhouj.UserState;
 import com.yufimtsev.tenhouj.callback.IOnGameAction;
 import com.yufimtsev.tenhouj.callback.IOnStateChangedCallback;
@@ -36,7 +37,7 @@ public class MainUtil {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Log.d(e);
                 }
                 //startGameWithName(name, "9", "C41190514", autoreconnect);
                 startBot(getNewId(), name, "9", "C90701723", autoreconnect);
@@ -109,7 +110,7 @@ public class MainUtil {
                                 try {
                                     Thread.sleep(2000);
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    Log.d(e);
                                 }
                             }
                             if (!lobby.startsWith("C")) {
@@ -155,8 +156,10 @@ public class MainUtil {
                     RunningClient runningClient = runningGames.get(id);
                     if (runningClient.client.getState() != UserState.PLAYING) {
                         if (reconnect) {
+                            Log.d("Reconnecting " + id + " on timeout");
                             runningClient.client.disconnect(null);
                         } else {
+                            Log.d("Disconnecting " + id + " on timeout");
                             stopBotWithId(id);
                         }
                     }
